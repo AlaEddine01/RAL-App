@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Button, Input, Table, Label } from "reactstrap";
+import {
+  Button,
+  Input,
+  Table,
+  Label,
+  Navbar,
+} from "reactstrap";
 
 function Search({
   addToCart,
@@ -18,27 +24,31 @@ function Search({
 
   return (
     <div className="rowContainer">
-      <Input
-        className="form-control"
-        onChange={(e) => handleSearchName(e.target.value)}
-        placeholder="Search..."
-        value={filteredProduct}
-      />
+      <Navbar color="light" light  sticky="top">
+        <Label for="search">Search...</Label>
+        <Input
+          className="form-control"
+          id="search"
+          onChange={(e) => handleSearchName(e.target.value)}
+          placeholder="Search..."
+          value={filteredProduct}
+        />
 
-      <Label for="Quantity">Quantity</Label>
-      <Input
-        placeholder="Quantity"
-        type="number"
-        id="Quantity"
-        onFocus={(e) => {
-          e.preventDefault();
-          setQuantity("");
-        }}
-        min={1}
-        step="1"
-        value={quantity}
-        onChange={(e) => handleQuantityChange(e)}
-      />
+        <Label for="Quantity">Quantity</Label>
+        <Input
+          placeholder="Quantity"
+          type="number"
+          id="Quantity"
+          onFocus={(e) => {
+            e.preventDefault();
+            setQuantity("");
+          }}
+          min={1}
+          step="1"
+          value={quantity}
+          onChange={(e) => handleQuantityChange(e)}
+        />
+      </Navbar>
 
       <Table striped>
         <thead>

@@ -8,13 +8,31 @@ import Cart from "./Cart";
 import { useReactToPrint } from "react-to-print";
 
 const AppTabs = () => {
+  const [activeTab, setActiveTab] = useState("1");
+
+  const [products, setProducts] = useState([]);
+
+  const [clientName, setClientName] = useState("");
+
+  const [cart, setCart] = useState([]);
+
+  const [dateForNow, setDateForNow] = useState("");
+
   const componentRef = useRef();
+  // const pageStyle = `
+  // @media print{
+  //   body{
+  //     font-size:10px
+  //   }
+  // }
+  // `;
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    pageStyle: `size: 302.36px 188.98px`,
+    // pageStyle: `size: 302.36px 188.98px`,
+    // pageStyle: { pageStyle },
+    documentTitle: `${clientName} ${dateForNow}`,
   });
-  const [activeTab, setActiveTab] = useState("1");
-  const [clientName, setClientName] = useState("");
 
   const handleClientName = (e) => {
     e.preventDefault();
@@ -26,25 +44,18 @@ const AppTabs = () => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const [products, setProducts] = useState([]);
-
   const getAllItems = async () => {
     await axios.get("/get").then((res) => {
       setProducts(res.data);
     });
   };
 
-  const [cart, setCart] = useState([]);
   const [filteredProduct, setFilteredProduct] = useState("");
 
   useEffect(() => {
     getAllItems();
     searchDate();
   }, []);
-
-  // const editProduct=async (_id)=>{
-  //   await axios.put(`http://localhost:5000/Update_Product/${_id}`,)
-  // }
 
   const addToCart = async (_id, quantity) => {
     await axios
@@ -76,7 +87,6 @@ const AppTabs = () => {
     setCart(newCart);
   };
 
-  const [dateForNow, setDateForNow] = useState("");
   const searchDate = () => {
     var today = new Date();
     var day = today.getDate();

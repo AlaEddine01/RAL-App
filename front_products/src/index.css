@@ -16,3 +16,17 @@ code {
 .rowContainer {
   margin-top: 20px;
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    margin-left: 1cm;
+    margin-right: 1cm;
+  }
+  Table {
+    font-size: 10pt;
+    line-height: 0.2rem;
+  }
+}
