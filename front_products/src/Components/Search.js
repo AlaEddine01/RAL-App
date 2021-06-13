@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Input,
-  Table,
-  Label,
-  Navbar,
-} from "reactstrap";
+import { Button, Input, Table, Label, Navbar } from "reactstrap";
 
 function Search({
   addToCart,
@@ -24,21 +18,23 @@ function Search({
 
   return (
     <div className="rowContainer">
-      <Navbar color="light" light  sticky="top">
+      <Navbar color="light" light sticky="top">
         <Label for="search">Search...</Label>
         <Input
-          className="form-control"
+          type="text"
           id="search"
-          onChange={(e) => handleSearchName(e.target.value)}
+          className="form-control"
           placeholder="Search..."
+          onChange={(e) => handleSearchName(e.target.value)}
           value={filteredProduct}
         />
 
-        <Label for="Quantity">Quantity</Label>
+        <Label for="quantity">Quantity</Label>
         <Input
-          placeholder="Quantity"
           type="number"
-          id="Quantity"
+          id="quantity"
+          className="form-control"
+          placeholder="Quantity"
           onFocus={(e) => {
             e.preventDefault();
             setQuantity("");
@@ -48,6 +44,11 @@ function Search({
           value={quantity}
           onChange={(e) => handleQuantityChange(e)}
         />
+        {filteredProducts.length > 1 ? (
+          <p>{filteredProducts.length} products found</p>
+        ) : (
+          <p>{filteredProducts.length} product found</p>
+        )}
       </Navbar>
 
       <Table striped>
@@ -65,12 +66,11 @@ function Search({
             <tr key={item._id}>
               <th scope="row">{index + 1}</th>
               <td>{item.item}</td>
-              {/* <td>{item.price}</td> */}
               <td>{new Intl.NumberFormat("ar-TN").format(item.price)}</td>
               <td>
                 <Button
                   color="primary"
-                  // Rq:  You can convert a truthy or falsy value to true boolean with the !! operator.
+                  // Rq:  You can convert a truthy or falsy value to true boolean with the !! operator.(used in cart.find)
                   disabled={
                     quantity === "0" ||
                     quantity === 0 ||
@@ -80,10 +80,6 @@ function Search({
                   onClick={(e) => {
                     addToCart(item._id, quantity);
                     setQuantity("");
-                    // localStorage.setItem(
-                    //   `${item.item}`,
-                    //   JSON.stringify({ ...item, quantity })
-                    // );
                   }}
                 >
                   Add

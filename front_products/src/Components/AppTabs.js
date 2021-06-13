@@ -9,34 +9,27 @@ import { useReactToPrint } from "react-to-print";
 
 const AppTabs = () => {
   const [activeTab, setActiveTab] = useState("1");
-
+  
   const [products, setProducts] = useState([]);
+  
+  const [filteredProduct, setFilteredProduct] = useState("");
 
   const [clientName, setClientName] = useState("");
-
+  
   const [cart, setCart] = useState([]);
-
+  
   const [dateForNow, setDateForNow] = useState("");
 
   const componentRef = useRef();
-  // const pageStyle = `
-  // @media print{
-  //   body{
-  //     font-size:10px
-  //   }
-  // }
-  // `;
-
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    // pageStyle: `size: 302.36px 188.98px`,
-    // pageStyle: { pageStyle },
-    documentTitle: `${clientName} ${dateForNow}`,
+    onBeforePrint: () => {
+      document.title = `${clientName} ${dateForNow}`;
+    },
   });
 
   const handleClientName = (e) => {
     e.preventDefault();
-    // this.setState({ clientName: e.target.value });
     setClientName(e.target.value);
   };
 
@@ -50,43 +43,37 @@ const AppTabs = () => {
     });
   };
 
-  const [filteredProduct, setFilteredProduct] = useState("");
 
-  useEffect(() => {
-    getAllItems();
-    searchDate();
-  }, []);
-
+  
   const addToCart = async (_id, quantity) => {
     await axios
-      .get(`/display_Product/${_id}`)
-      .then((res) => {
-        const newObj = res.data;
-        const qtyObj = { quantity: quantity };
-        const returnedTarget = Object.assign(newObj, qtyObj);
-        setCart(cart.concat(returnedTarget));
-        setFilteredProduct("");
-        // console.log(returnedTarget)
-      })
-      .catch((err) => {
+    .get(`/display_Product/${_id}`)
+    .then((res) => {
+      const newObj = res.data;
+      const qtyObj = { quantity: quantity };
+      const returnedTarget = Object.assign(newObj, qtyObj);
+      setCart(cart.concat(returnedTarget));
+      setFilteredProduct("");
+    })
+    .catch((err) => {
         console.error(err);
       });
+    };
+    
+    const deleteProduct = async (_id) => {
+      await axios.delete(`/Delete_Product/${_id}`).then((res) => {
+        res.status === 200 && getAllItems();
+      });
+    };
+    
+    const handleSearchName = (input) => {
+      setFilteredProduct(input);
   };
-
-  const deleteProduct = async (_id) => {
-    await axios.delete(`/Delete_Product/${_id}`).then((res) => {
-      res.status === 200 && getAllItems();
-    });
-  };
-
-  const handleSearchName = (input) => {
-    setFilteredProduct(input);
-  };
-
+  
   const editCart = (newCart) => {
     setCart(newCart);
   };
-
+  
   const searchDate = () => {
     var today = new Date();
     var day = today.getDate();
@@ -98,34 +85,39 @@ const AppTabs = () => {
     if (day < 10) {
       day = "0" + day;
     }
-
+    
     if (month < 10) {
       month = "0" + month;
     }
-
+    
     if (hours < 10) {
       hours = "0" + hours;
     }
-
+    
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
-
+    
     if (secondes < 10) {
       secondes = "0" + secondes;
     }
-
+    
     today = day + "/" + month + "/" + year + "-" + hours + ":" + minutes + ":" + secondes;
-    // console.log(today);
+    
     setDateForNow(today);
   };
   setInterval(searchDate, 1000);
 
+  useEffect(() => {
+    getAllItems();
+    searchDate();
+  }, []);
+  
   let filteredProducts = [];
   filteredProducts = products.filter((product) =>
-    product.item.toUpperCase().includes(filteredProduct.toUpperCase())
+  product.item.toUpperCase().includes(filteredProduct.toUpperCase())
   );
-
+  
   return (
     <div>
       <Nav tabs>
@@ -135,7 +127,7 @@ const AppTabs = () => {
             onClick={() => {
               toggle("1");
             }}
-          >
+            >
             Cart
           </NavLink>
         </NavItem>
@@ -145,7 +137,7 @@ const AppTabs = () => {
             onClick={() => {
               toggle("2");
             }}
-          >
+            >
             Add To Cart
           </NavLink>
         </NavItem>
@@ -189,8 +181,6 @@ const AppTabs = () => {
                 handleSearchName={handleSearchName}
                 filteredProduct={filteredProduct}
               />
-              {/* {JSON.stringify(localStorage.getItem("Cart"))} */}
-              {/* {cart.length !== 0 && localStorage.setItem("Cart", JSON.stringify(cart))} */}
             </Col>
           </Row>
         </TabPane>

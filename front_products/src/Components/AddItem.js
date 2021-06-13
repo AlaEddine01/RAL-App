@@ -4,6 +4,7 @@ import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
 
 function AddItem({ getAllItems }) {
   const [product, setProduct] = useState({ item: "", price: "" });
+
   const [error, setError] = useState({ status: "", message: "" });
 
   const handleChange = (e) => {
@@ -19,7 +20,6 @@ function AddItem({ getAllItems }) {
 
   const addProduct = async (e) => {
     e.preventDefault();
-    // console.log("Product Added");
     const newProduct = {
       item: product.item.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()),
       price: product.price,
@@ -27,15 +27,12 @@ function AddItem({ getAllItems }) {
     await axios
       .post("/addItem", newProduct)
       .then((res) => {
-        // res.status === 200 && getAllItems();
         if (res.status === 200) {
           getAllItems();
           setProduct({ item: "", price: "" });
         }
       })
-      // .then(setProduct({ item: "", price: "" }))
       .catch((error) => {
-        // console.log(error.response.data);
         setError({ status: error.response.status, message: error.response.data });
       });
   };
@@ -54,6 +51,8 @@ function AddItem({ getAllItems }) {
             {`Price: ${product.price}`}
           </Alert>
           <Button
+            outline
+            size="lg"
             onClick={(e) => {
               setError({ message: "", status: "" });
               setProduct({ item: "", price: "" });

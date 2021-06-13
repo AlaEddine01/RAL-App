@@ -6,7 +6,6 @@ export class Cart extends Component {
   state = {
     modal: false,
     itemToChange: "",
-    clientName: "",
   };
 
   toggle = () => {
@@ -24,16 +23,10 @@ export class Cart extends Component {
     return sum;
   };
 
-  // handleClientName = (e) => {
-  //   e.preventDefault();
-  //   this.setState({ clientName: e.target.value });
-  // };
-
   render() {
     return (
       <div>
         <div className="rowContainer">
-          {/* <h4>Your Cart</h4> */}
           <Row>
             <Col>
               <Input
@@ -49,6 +42,7 @@ export class Cart extends Component {
               {this.props.dateForNow}
             </Col>
           </Row>
+          
           <Table striped>
             <thead>
               <tr>
@@ -74,7 +68,6 @@ export class Cart extends Component {
                   <td>{item.item}</td>
                   <td>{new Intl.NumberFormat("ar-TN").format(item.price)}</td>
                   <td>{new Intl.NumberFormat("ar-TN").format(item.price * item.quantity)}</td>
-                  {/* {localStorage.setItem(`${item.item}`, JSON.stringify(item))} */}
                   <EditItem
                     modal={this.state.modal}
                     toggle={this.toggle}

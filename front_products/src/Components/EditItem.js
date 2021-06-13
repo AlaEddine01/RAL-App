@@ -4,11 +4,13 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label } from
 
 const EditItem = (props) => {
   const { modal, toggle, itemToChange, cart, editCart } = props;
+
+  const [newProduct, setNewProduct] = useState(itemToChange);
+  const [checkedOrNot, setCheckedOrNot] = useState(false);
+
   useEffect(() => {
     setNewProduct(itemToChange);
   }, [modal, itemToChange]);
-  const [newProduct, setNewProduct] = useState(itemToChange);
-  const [checkedOrNot, setCheckedOrNot] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -26,10 +28,12 @@ const EditItem = (props) => {
       item: newProduct.item.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()),
       price: newProduct.price,
     };
+
     await axios.put(`/Update_Product/${newProduct._id}`, editedProductInDB).then((res) => {
       res.status === 200 && alert("Product edited in DB");
     });
   };
+
   const editProductInCart = () => {
     const editedProductInCart = {
       item: newProduct.item.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()),
@@ -42,6 +46,7 @@ const EditItem = (props) => {
     );
     editCart(cartCopy);
   };
+
   const deleteProductFromCart = () => {
     const cartCopy = cart.filter((el) => el._id !== newProduct._id);
     editCart(cartCopy);
