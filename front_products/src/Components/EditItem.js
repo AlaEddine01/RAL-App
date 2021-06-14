@@ -29,9 +29,15 @@ const EditItem = (props) => {
       price: newProduct.price,
     };
 
-    await axios.put(`/Update_Product/${newProduct._id}`, editedProductInDB).then((res) => {
-      res.status === 200 && alert("Product edited in DB");
-    });
+    await axios
+      .put(`/Update_Product/${newProduct._id}`, editedProductInDB, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        res.status === 200 && alert("Product edited in DB");
+      });
   };
 
   const editProductInCart = () => {

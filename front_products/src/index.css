@@ -16,6 +16,10 @@ code {
 .rowContainer {
   margin-top: 20px;
 }
+.nav-item {
+  /* margin: 0 10px; */
+  cursor: pointer;
+}
 
 @media print {
   @page {

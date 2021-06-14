@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./connectDB");
+const passport = require("passport");
 
 //app config
 const app = express();
@@ -10,6 +11,10 @@ const port = process.env.PORT || 5000;
 //middlewares
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
+
+// import passport middleware
+require("./passport")(passport);
 
 //db config
 connectDB();

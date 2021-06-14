@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const config = require("config");
 
-const mongoURI =
-  "mongodb+srv://admin:HKgi4vIMmKLbNKKz@cluster0.bkogy.mongodb.net/productsDB?retryWrites=true&w=majority";
+const mongoURI = config.get("mongoURI");
 
 const connectDB = () => {
   mongoose.connect(mongoURI, {

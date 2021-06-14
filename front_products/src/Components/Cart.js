@@ -42,7 +42,7 @@ export class Cart extends Component {
               {this.props.dateForNow}
             </Col>
           </Row>
-          
+
           <Table striped>
             <thead>
               <tr>
@@ -94,6 +94,7 @@ export class Cart extends Component {
               Total= {new Intl.NumberFormat("ar-TN").format(this.getTotal())}
             </Col>
           </Row>
+          <p>You have been served by: {this.props.userName}</p>
         </div>
       </div>
     );

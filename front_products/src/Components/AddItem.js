@@ -25,7 +25,11 @@ function AddItem({ getAllItems }) {
       price: product.price,
     };
     await axios
-      .post("/addItem", newProduct)
+      .post("/addItem", newProduct, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         if (res.status === 200) {
           getAllItems();
@@ -87,6 +91,7 @@ function AddItem({ getAllItems }) {
               value={product.price}
             />
           </FormGroup>
+          <hr />
           <Button
             color="success"
             disabled={product.item === "" || product.price === ""}
