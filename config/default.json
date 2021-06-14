@@ -1,0 +1,4 @@
+{
+    "mongoURI" : "mongodb+srv://admin:HKgi4vIMmKLbNKKz@cluster0.bkogy.mongodb.net/productsDB?retryWrites=true&w=majority",
+    "secretOrKey":"session"
+}
