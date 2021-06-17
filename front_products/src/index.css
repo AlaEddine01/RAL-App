@@ -20,6 +20,9 @@ code {
   /* margin: 0 10px; */
   cursor: pointer;
 }
+.cartFooter {
+  display: none;
+}
 
 @media print {
   @page {
@@ -33,4 +36,18 @@ code {
     font-size: 10pt;
     line-height: 0.2rem;
   }
+  .cartFooter {
+    display: flex;
+    font-size: 10pt;
+    line-height: 0.2rem;
+    justify-content: flex-end;
+    padding-top: 10pt;
+  }
+}
+.navbar-nav {
+  flex-direction: row;
+  justify-content: space-between;
+}
+a {
+  text-decoration: none;
 }

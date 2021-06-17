@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Alert } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 function Login(props) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  const [error, setError] = useState(null);
 
   const loginUser = async () => {
     await axios
@@ -17,7 +19,7 @@ function Login(props) {
           props.history.push("/");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setError(err.response.data));
   };
 
   return (
@@ -29,7 +31,9 @@ function Login(props) {
           id="username"
           placeholder="User name"
           value={userName}
+          // onBlur={setError(null)}
           onChange={(e) => {
+            setError(null)
             setUserName(e.target.value);
           }}
         />
@@ -41,18 +45,23 @@ function Login(props) {
           id="password"
           placeholder="Password"
           value={password}
+          // onBlur={setError(null)}
           onChange={(e) => {
+            setError(null)
             setPassword(e.target.value);
+            
           }}
-        />
+          />
       </FormGroup>
       <hr />
+      {error && <Alert color="warning"> {error} </Alert>}
       <Button
         className="form-control"
+        disabled={error || userName === "" || password === ""}
         onClick={() => {
           loginUser();
         }}
-      >
+        >
         Log In
       </Button>
     </Form>

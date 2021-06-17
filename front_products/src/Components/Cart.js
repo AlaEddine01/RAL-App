@@ -23,6 +23,8 @@ export class Cart extends Component {
     return sum;
   };
 
+  
+
   render() {
     return (
       <div>
@@ -94,7 +96,7 @@ export class Cart extends Component {
               Total= {new Intl.NumberFormat("ar-TN").format(this.getTotal())}
             </Col>
           </Row>
-          <p>You have been served by: {this.props.userName}</p>
+          <p className="cartFooter">You have been served by: {this.props.userName}</p>
         </div>
       </div>
     );

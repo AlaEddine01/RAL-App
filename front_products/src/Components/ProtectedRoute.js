@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { Button } from "reactstrap";
 
 function ProtectedRoute({ isAuth, component: Component, ...rest }) {
   return (
@@ -8,19 +7,7 @@ function ProtectedRoute({ isAuth, component: Component, ...rest }) {
       {...rest}
       render={(props) => {
         if (isAuth) {
-          return (
-            <>
-              <Component {...rest} />
-              <Button
-                className="form-control"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                }}
-              >
-                Log Out
-              </Button>
-            </>
-          );
+          return <Component {...rest} />;
         } else {
           return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
         }

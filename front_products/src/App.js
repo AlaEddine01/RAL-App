@@ -1,12 +1,25 @@
-import { Container, Button } from "reactstrap";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import AppTabs from "./Components/AppTabs";
-import Login from "./Components/Login";
 import { useEffect, useState } from "react";
+import { withRouter, Route, Switch } from "react-router-dom";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+// import { useReactToPrint } from "react-to-print";
+import { Container } from "reactstrap";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import Login from "./Components/Login";
+import NavBar from "./Components/NavBar";
+// import Cart from "./Components/Cart";
+import Search from "./Components/Search";
+import AddItem from "./Components/AddItem";
+import CartPrinter from "./Components/CartPrinter";
+// import Menu from "./Components/Menu";
+// import AppTabs from "./Components/AppTabs";
 
-function App() {
+function App(props) {
+  const [cart, setCart] = useState([]);
+
+  const [userName, setUserName] = useState("");
+  // const [clientName, setClientName] = useState("");
+
   const [isAuth, setIsAuth] = useState(true);
   const [token, setToken] = useState("");
 
@@ -18,7 +31,6 @@ function App() {
         },
       })
       .then((response) => {
-        // console.log(token);
         if (response.data === "User is Authenticated") {
           setIsAuth(true);
         }
@@ -28,36 +40,63 @@ function App() {
       });
   };
 
+  // eslint-disable-next-line
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   });
 
   useEffect(() => {
+    handleUserName();
     checkToken();
+    // eslint-disable-next-line
   }, [token]);
+
+  const handleUserName = () => {
+    if (localStorage.getItem("token") !== null) {
+      var token = localStorage.getItem("token");
+      var decoded = jwt_decode(token);
+      setUserName(decoded.email);
+    } else {
+      // redirection to login page
+      props.history.push("/login");
+    }
+  };
+
+  const editCart = (newCart) => {
+    setCart(newCart);
+  };
+
   return (
-    <Router>
-      <Switch>
-        <Container>
-          {/* "proxy": "https://ral-app.herokuapp.com", */}
-          <ProtectedRoute
-            exact
-            path="/"
-            isAuth={isAuth}
-            component={AppTabs}
-            token={token}
-            checkToken={checkToken}
-          />
-          {/* <Route exact path="/"> */}
-          {/* <AppTabs token={token} checkToken={checkToken} /> */}
-          {/* </Route> */}
-          <Route exact path="/login">
-            <Login setIsAuth={setIsAuth} />
-          </Route>
-        </Container>
-      </Switch>
-    </Router>
+    <Switch>
+      <Container>
+        {/* "proxy": "https://ral-app.herokuapp.com", */}
+        <Route path="/">
+          <NavBar {...props} />
+        </Route>
+        <ProtectedRoute
+          exact
+          path="/"
+          isAuth={isAuth}
+          component={CartPrinter}
+          cart={cart}
+          userName={userName}
+          editCart={editCart}
+        />
+        <ProtectedRoute
+          exact
+          path="/search"
+          isAuth={isAuth}
+          component={Search}
+          cart={cart}
+          setCart={setCart}
+        />
+        <ProtectedRoute exact path="/add" isAuth={isAuth} component={AddItem} />
+        <Route exact path="/login">
+          <Login setIsAuth={setIsAuth} />
+        </Route>
+      </Container>
+    </Switch>
   );
 }
 
-export default App;
+export default withRouter(App);

@@ -32,7 +32,6 @@ function AddItem({ getAllItems }) {
       })
       .then((res) => {
         if (res.status === 200) {
-          getAllItems();
           setProduct({ item: "", price: "" });
         }
       })

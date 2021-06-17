@@ -1,20 +1,82 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState,useEffect } from "react";
 import { Button, Input, Table, Label, Navbar } from "reactstrap";
 
 function Search({
-  addToCart,
-  deleteProduct,
-  filteredProducts,
-  handleSearchName,
-  filteredProduct,
+  // addToCart,
+  // deleteProduct,
+  // filteredProducts,
+  // handleSearchName,
+  // filteredProduct,
+  setCart,
   cart,
 }) {
+  const [products, setProducts] = useState([]);
+
   const [quantity, setQuantity] = useState(0);
+
+  const [filteredProduct, setFilteredProduct] = useState("");
+
+  const getAllItems = async () => {
+    await axios
+      .get("/get", {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setProducts(res.data);
+      });
+  };
+
+  const deleteProduct = async (_id) => {
+    await axios
+      .delete(`/Delete_Product/${_id}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        res.status === 200 && getAllItems();
+      });
+  };
 
   const handleQuantityChange = (e) => {
     e.preventDefault();
     setQuantity(e.target.value);
   };
+
+  const addToCart = async (_id, quantity) => {
+    await axios
+      .get(`/display_Product/${_id}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        const newObj = res.data;
+        const qtyObj = { quantity: quantity };
+        const returnedTarget = Object.assign(newObj, qtyObj);
+        setCart(cart.concat(returnedTarget));
+        setFilteredProduct("");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleSearchName = (input) => {
+    setFilteredProduct(input);
+  };
+
+  useEffect(() => {
+    getAllItems()
+  })
+
+  let filteredProducts = [];
+  filteredProducts = products.filter((product) =>
+    product.item.toUpperCase().includes(filteredProduct.toUpperCase())
+  );
 
   return (
     <div className="rowContainer">
