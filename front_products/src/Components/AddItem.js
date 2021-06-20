@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { Alert, Button, Form, FormGroup, Label } from "reactstrap";
 
 function AddItem({ getAllItems }) {
   const [product, setProduct] = useState({ item: "", price: "" });

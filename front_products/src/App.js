@@ -19,47 +19,59 @@ function App(props) {
   const [token, setToken] = useState("");
 
   const checkToken = async () => {
-    await axios
-      .get("/validateToken", {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        if (response.data === "User is Authenticated") {
-          setIsAuth(true);
-        }
-      })
-      .catch((err) => {
-        setIsAuth(false);
-      });
-  };
+    if (localStorage.getItem("token") !== null){
+      await axios
+        .get("/validateToken", {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          if (response.data === "User is Authenticated") {
+            setIsAuth(true);
+            props.history.push('/cart')
+          }
+        })
+        .catch((err) => {
+          setIsAuth(false);
+        });
 
-  const handleUserName = () => {
-    if (localStorage.getItem("token") !== null) {
-      var token = localStorage.getItem("token");
-      var decoded = jwt_decode(token);
-      setUserName(decoded.email);
-    } else {
-      // redirection to login page
-      props.history.push("/login");
+    }else{
+      setIsAuth(false)
     }
   };
+  useEffect(() => {
+    const handleUserName = () => {
+      if (localStorage.getItem("token") !== null) {
+        var Token = localStorage.getItem("token");
+        var decoded = jwt_decode(Token);
+        setUserName(decoded.email);
+      } else {
+        // redirection to login page
+        props.history.push("/");
+      }
+    };
+    handleUserName();
+
+    return () => {
+      console.log("clenup userName");
+    };
+    // eslint-disable-next-line 
+  },[token]);
 
   const editCart = (newCart) => {
     setCart(newCart);
   };
 
-  // eslint-disable-next-line
+// eslint-disable-next-line 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   });
 
   useEffect(() => {
-    handleUserName();
     checkToken();
-    // eslint-disable-next-line
-  }, [token]);
+  },[token]);
+
 
   return (
     <Switch>
@@ -73,7 +85,7 @@ function App(props) {
 
         <ProtectedRoute
           exact
-          path="/"
+          path="/cart"
           isAuth={isAuth}
           component={CartPrinter}
           cart={cart}
@@ -89,7 +101,7 @@ function App(props) {
           setCart={setCart}
         />
         <ProtectedRoute exact path="/add" isAuth={isAuth} component={AddItem} />
-        <Route exact path="/login">
+        <Route exact path="/">
           <Login setIsAuth={setIsAuth} />
         </Route>
       </Container>

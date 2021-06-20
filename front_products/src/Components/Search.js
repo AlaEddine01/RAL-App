@@ -66,7 +66,10 @@ function Search({
 
   useEffect(() => {
     getAllItems()
-  })
+    return ()=>{
+      console.log("cleanup Search")
+    }
+  },[])
 
   let filteredProducts = [];
   filteredProducts = products.filter((product) =>

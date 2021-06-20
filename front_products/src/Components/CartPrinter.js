@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import Cart from "./Cart";
 import {FaPrint} from 'react-icons/fa'
@@ -8,11 +8,7 @@ function CartPrinter({ ...rest }) {
 
   const [dateForNow, setDateForNow] = useState("");
 
-  const handleClientName = (e) => {
-    e.preventDefault();
-    setClientName(e.target.value);
-  };
-
+  
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -20,6 +16,11 @@ function CartPrinter({ ...rest }) {
       document.title = `${clientName} ${dateForNow}`;
     },
   });
+  
+  const handleClientName = (e) => {
+    e.preventDefault();
+    setClientName(e.target.value);
+  };
 
   const searchDate = () => {
     var today = new Date();
@@ -53,8 +54,14 @@ function CartPrinter({ ...rest }) {
 
     setDateForNow(today);
   };
-  setInterval(searchDate, 1000);
-
+  setInterval(searchDate, 1000)
+  
+useEffect(() => {
+  searchDate()
+  return () => {
+    console.log('cleanup Cart Printer')
+  }
+},[])
   return (
     <div>
       <Cart

@@ -14,7 +14,7 @@ function NavBar(props) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavbarText>
-              <Link to="/">Cart</Link>
+              <Link to="/cart">Cart</Link>
             </NavbarText>
             <NavbarText>
               <Link to="/search">Search</Link>
@@ -27,7 +27,7 @@ function NavBar(props) {
               color="danger"
               onClick={() => {
                 localStorage.removeItem("token");
-                props.history.push("/login");
+                props.history.push("/");
               }}
             >
               LogOut

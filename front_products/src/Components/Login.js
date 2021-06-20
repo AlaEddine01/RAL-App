@@ -16,7 +16,7 @@ function Login(props) {
         if (response.status === 200) {
           localStorage.setItem("token", response.data.token);
           props.setIsAuth(true);
-          props.history.push("/");
+          props.history.push("/cart");
         }
       })
       .catch((err) => setError(err.response.data));
