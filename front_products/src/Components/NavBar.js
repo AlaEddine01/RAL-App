@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Collapse, Navbar, NavbarToggler, Nav, NavItem, NavLink } from "reactstrap";
+import { Collapse, Navbar, NavbarToggler, Nav, NavbarText, Button } from "reactstrap";
 function NavBar(props) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,31 +13,34 @@ function NavBar(props) {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <Link to="/">
-              <NavItem>
-                <NavLink>Cart</NavLink>
-              </NavItem>
-            </Link>
-            <Link to="/search">
-              <NavItem>
-                <NavLink>Search</NavLink>
-              </NavItem>
-            </Link>
-            <Link to="/add">
-              <NavItem>
-                <NavLink>Add</NavLink>
-              </NavItem>
-            </Link>
-            <NavItem>
-              <NavLink
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  props.history.push('/login')
-                }}
-              >
-                LogOut
-              </NavLink>
-            </NavItem>
+            <NavbarText>
+              <Link to="/">Cart</Link>
+            </NavbarText>
+            <NavbarText>
+              <Link to="/search">Search</Link>
+            </NavbarText>
+            <NavbarText>
+              <Link to="/add">Add</Link>
+            </NavbarText>
+            <Button
+              outline
+              color="danger"
+              onClick={() => {
+                localStorage.removeItem("token");
+                props.history.push("/login");
+              }}
+            >
+              LogOut
+            </Button>
+            {/* <NavbarText
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                localStorage.removeItem("token");
+                props.history.push("/login");
+              }}
+            >
+              LogOut
+            </NavbarText> */}
           </Nav>
         </Collapse>
       </Navbar>

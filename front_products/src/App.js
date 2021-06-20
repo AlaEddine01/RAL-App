@@ -2,23 +2,18 @@ import { useEffect, useState } from "react";
 import { withRouter, Route, Switch } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-// import { useReactToPrint } from "react-to-print";
 import { Container } from "reactstrap";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Login from "./Components/Login";
 import NavBar from "./Components/NavBar";
-// import Cart from "./Components/Cart";
 import Search from "./Components/Search";
 import AddItem from "./Components/AddItem";
 import CartPrinter from "./Components/CartPrinter";
-// import Menu from "./Components/Menu";
-// import AppTabs from "./Components/AppTabs";
 
 function App(props) {
   const [cart, setCart] = useState([]);
 
   const [userName, setUserName] = useState("");
-  // const [clientName, setClientName] = useState("");
 
   const [isAuth, setIsAuth] = useState(true);
   const [token, setToken] = useState("");
@@ -40,17 +35,6 @@ function App(props) {
       });
   };
 
-  // eslint-disable-next-line
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  });
-
-  useEffect(() => {
-    handleUserName();
-    checkToken();
-    // eslint-disable-next-line
-  }, [token]);
-
   const handleUserName = () => {
     if (localStorage.getItem("token") !== null) {
       var token = localStorage.getItem("token");
@@ -66,13 +50,27 @@ function App(props) {
     setCart(newCart);
   };
 
+  // eslint-disable-next-line
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  });
+
+  useEffect(() => {
+    handleUserName();
+    checkToken();
+    // eslint-disable-next-line
+  }, [token]);
+
   return (
     <Switch>
       <Container>
         {/* "proxy": "https://ral-app.herokuapp.com", */}
-        <Route path="/">
-          <NavBar {...props} />
-        </Route>
+        {isAuth && (
+          <Route path="/">
+            <NavBar {...props} />
+          </Route>
+        )}
+
         <ProtectedRoute
           exact
           path="/"

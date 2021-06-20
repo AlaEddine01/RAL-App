@@ -3,11 +3,6 @@ import React, { useState,useEffect } from "react";
 import { Button, Input, Table, Label, Navbar } from "reactstrap";
 
 function Search({
-  // addToCart,
-  // deleteProduct,
-  // filteredProducts,
-  // handleSearchName,
-  // filteredProduct,
   setCart,
   cart,
 }) {

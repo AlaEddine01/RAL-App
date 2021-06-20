@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import Cart from "./Cart";
+import {FaPrint} from 'react-icons/fa'
 
 function CartPrinter({ ...rest }) {
   const [clientName, setClientName] = useState("");
@@ -11,6 +12,7 @@ function CartPrinter({ ...rest }) {
     e.preventDefault();
     setClientName(e.target.value);
   };
+
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -62,8 +64,8 @@ function CartPrinter({ ...rest }) {
         clientName={clientName}
         handleClientName={handleClientName}
       />
-      <button disabled={clientName === ""} onClick={handlePrint}>
-        Print this out!
+      <button disabled={!!(clientName === "")} onClick={handlePrint}>
+        Print this out! <FaPrint/>
       </button>
     </div>
   );
