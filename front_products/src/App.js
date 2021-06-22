@@ -70,6 +70,7 @@ function App(props) {
 
   useEffect(() => {
     checkToken();
+    // eslint-disable-next-line
   },[token]);
 
 

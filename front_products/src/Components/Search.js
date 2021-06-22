@@ -1,11 +1,8 @@
 import axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Input, Table, Label, Navbar } from "reactstrap";
 
-function Search({
-  setCart,
-  cart,
-}) {
+function Search({ setCart, cart }) {
   const [products, setProducts] = useState([]);
 
   const [quantity, setQuantity] = useState(0);
@@ -36,11 +33,6 @@ function Search({
       });
   };
 
-  const handleQuantityChange = (e) => {
-    e.preventDefault();
-    setQuantity(e.target.value);
-  };
-
   const addToCart = async (_id, quantity) => {
     await axios
       .get(`/display_Product/${_id}`, {
@@ -60,16 +52,12 @@ function Search({
       });
   };
 
-  const handleSearchName = (input) => {
-    setFilteredProduct(input);
-  };
-
   useEffect(() => {
-    getAllItems()
-    return ()=>{
-      console.log("cleanup Search")
-    }
-  },[])
+    getAllItems();
+    return () => {
+      console.log("cleanup Search");
+    };
+  }, []);
 
   let filteredProducts = [];
   filteredProducts = products.filter((product) =>
@@ -85,7 +73,7 @@ function Search({
           id="search"
           className="form-control"
           placeholder="Search..."
-          onChange={(e) => handleSearchName(e.target.value)}
+          onChange={(e) => setFilteredProduct(e.target.value)}
           value={filteredProduct}
         />
 
@@ -99,10 +87,10 @@ function Search({
             e.preventDefault();
             setQuantity("");
           }}
-          min={1}
-          step="1"
+          min={0.01}
+          step="0.01"
           value={quantity}
-          onChange={(e) => handleQuantityChange(e)}
+          onChange={(e) => setQuantity(e.target.value)}
         />
         {filteredProducts.length > 1 ? (
           <p>{filteredProducts.length} products found</p>
