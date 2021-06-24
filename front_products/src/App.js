@@ -80,7 +80,7 @@ function App(props) {
         {/* "proxy": "https://ral-app.herokuapp.com", */}
         {isAuth && (
           <Route path="/">
-            <NavBar {...props} />
+            <NavBar {...props} setCart={setCart} />
           </Route>
         )}
 

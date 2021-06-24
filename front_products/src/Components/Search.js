@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Button, Input, Table, Label, Navbar } from "reactstrap";
+import { Button, Input, Table, Label, Navbar, Spinner } from "reactstrap";
 
 function Search({ setCart, cart }) {
   const [products, setProducts] = useState([]);
@@ -9,7 +9,10 @@ function Search({ setCart, cart }) {
 
   const [filteredProduct, setFilteredProduct] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const getAllItems = async () => {
+    setLoading(true);
     await axios
       .get("/get", {
         headers: {
@@ -18,6 +21,10 @@ function Search({ setCart, cart }) {
       })
       .then((res) => {
         setProducts(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -30,10 +37,14 @@ function Search({ setCart, cart }) {
       })
       .then((res) => {
         res.status === 200 && getAllItems();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
   const addToCart = async (_id, quantity) => {
+    setLoading(true);
     await axios
       .get(`/display_Product/${_id}`, {
         headers: {
@@ -46,6 +57,7 @@ function Search({ setCart, cart }) {
         const returnedTarget = Object.assign(newObj, qtyObj);
         setCart(cart.concat(returnedTarget));
         setFilteredProduct("");
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
@@ -98,50 +110,55 @@ function Search({ setCart, cart }) {
           <p>{filteredProducts.length} product found</p>
         )}
       </Navbar>
-
-      <Table striped>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Product Name</th>
-            <th>Unit Price</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((item, index) => (
-            <tr key={item._id}>
-              <th scope="row">{index + 1}</th>
-              <td>{item.item}</td>
-              <td>{new Intl.NumberFormat("ar-TN").format(item.price)}</td>
-              <td>
-                <Button
-                  color="primary"
-                  // Rq:  You can convert a truthy or falsy value to true boolean with the !! operator.(used in cart.find)
-                  disabled={
-                    quantity === "0" ||
-                    quantity === 0 ||
-                    quantity === "" ||
-                    !!cart.find((el) => el.item === item.item)
-                  }
-                  onClick={(e) => {
-                    addToCart(item._id, quantity);
-                    setQuantity("");
-                  }}
-                >
-                  Add
-                </Button>
-              </td>
-              <td>
-                <Button color="danger" onClick={() => deleteProduct(item._id)}>
-                  delete
-                </Button>
-              </td>
+      {loading ? (
+        <center>
+          <Spinner color="success" children="" />
+        </center>
+      ) : (
+        <Table striped>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product Name</th>
+              <th>Unit Price</th>
+              <th></th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredProducts.map((item, index) => (
+              <tr key={item._id}>
+                <th scope="row">{index + 1}</th>
+                <td>{item.item}</td>
+                <td>{new Intl.NumberFormat("ar-TN").format(item.price)}</td>
+                <td>
+                  <Button
+                    color="primary"
+                    // Rq:  You can convert a truthy or falsy value to true boolean with the !! operator.(used in cart.find)
+                    disabled={
+                      quantity === "0" ||
+                      quantity === 0 ||
+                      quantity === "" ||
+                      !!cart.find((el) => el.item === item.item)
+                    }
+                    onClick={(e) => {
+                      addToCart(item._id, quantity);
+                      setQuantity("");
+                    }}
+                  >
+                    Add
+                  </Button>
+                </td>
+                <td>
+                  <Button color="danger" onClick={() => deleteProduct(item._id)}>
+                    delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </div>
   );
 }

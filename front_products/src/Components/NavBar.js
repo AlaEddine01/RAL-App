@@ -26,21 +26,13 @@ function NavBar(props) {
               outline
               color="danger"
               onClick={() => {
+                props.setCart([]);
                 localStorage.removeItem("token");
                 props.history.push("/");
               }}
             >
               LogOut
             </Button>
-            {/* <NavbarText
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                localStorage.removeItem("token");
-                props.history.push("/login");
-              }}
-            >
-              LogOut
-            </NavbarText> */}
           </Nav>
         </Collapse>
       </Navbar>
