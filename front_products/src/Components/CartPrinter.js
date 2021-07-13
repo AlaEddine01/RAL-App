@@ -72,7 +72,7 @@ useEffect(() => {
         handleClientName={handleClientName}
       />
       <button disabled={!!(clientName === "")} onClick={handlePrint}>
-        Print this out! <FaPrint/>
+        Imprimer <FaPrint/>
       </button>
     </div>
   );

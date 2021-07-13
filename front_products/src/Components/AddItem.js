@@ -59,16 +59,16 @@ function AddItem({ getAllItems }) {
   }
   return (
     <div className="rowContainer">
-      <h4>Add A New Product</h4>
+      <h4>Ajouter un nouveau produit</h4>
       {error.message !== "" ? (
         // Show Error
         <>
           <Alert color="danger">
             {`${error.message}:`}
             <br />
-            {`Item: ${product.item}`}
+            {`Produit: ${product.item}`}
             <br />
-            {`Price: ${product.price}`}
+            {`Prix: ${product.price}`}
           </Alert>
           <Button
             outline
@@ -84,13 +84,13 @@ function AddItem({ getAllItems }) {
       ) : (
         <Form>
           <FormGroup>
-            <Label for="item">Item</Label>
+            <Label for="item">Produit</Label>
             <input
               ref={nameRef}
               className="form-control"
               type="text"
               id="item"
-              placeholder="Item"
+              placeholder="Nom du produit"
               name="item"
               onKeyDown={onFirstInputKey}
               onChange={handleChange}
@@ -100,13 +100,13 @@ function AddItem({ getAllItems }) {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="price">Price</Label>
+            <Label for="price">Prix</Label>
             <input
               ref={priceRef}
               className="form-control"
               type="number"
               id="price"
-              placeholder="Price"
+              placeholder="Prix"
               name="price"
               onKeyDown={onLastInputKey}
               onChange={handleChange}
@@ -114,15 +114,17 @@ function AddItem({ getAllItems }) {
             />
           </FormGroup>
           <hr />
-          <button
-            ref={addRef}
-            className="btn btn-success"
-            // color="success"
-            disabled={product.item === "" || product.price === ""}
-            onClick={addProduct}
-          >
-            Add New Product
-          </button>
+          <center>
+            <button
+              ref={addRef}
+              className="btn btn-success"
+              // color="success"
+              disabled={product.item === "" || product.price === ""}
+              onClick={addProduct}
+            >
+              Ajouter à la base de données
+            </button>
+          </center>
         </Form>
       )}
     </div>

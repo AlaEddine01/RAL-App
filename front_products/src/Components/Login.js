@@ -25,11 +25,11 @@ function Login(props) {
   return (
     <Form style={{ margin: "100px 15px" }}>
       <FormGroup>
-        <Label for="username">User Name</Label>
+        <Label for="username">Nom d'utilisateur</Label>
         <Input
           type="text"
           id="username"
-          placeholder="User name"
+          placeholder="Nom d'utilisateur"
           value={userName}
           // onBlur={setError(null)}
           onChange={(e) => {
@@ -39,11 +39,11 @@ function Login(props) {
         />
       </FormGroup>
       <FormGroup>
-        <Label for="password">Password</Label>
+        <Label for="password">Mot de passe</Label>
         <Input
           type="password"
           id="password"
-          placeholder="Password"
+          placeholder="Mot de passe"
           value={password}
           // onBlur={setError(null)}
           onChange={(e) => {
@@ -62,7 +62,7 @@ function Login(props) {
           loginUser();
         }}
         >
-        Log In
+        Connecter
       </Button>
     </Form>
   );

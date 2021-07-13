@@ -14,13 +14,13 @@ function NavBar(props) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavbarText>
-              <Link to="/cart">Cart</Link>
+              <Link to="/cart">Panier</Link>
             </NavbarText>
             <NavbarText>
-              <Link to="/search">Search</Link>
+              <Link to="/search">Rechercher</Link>
             </NavbarText>
             <NavbarText>
-              <Link to="/add">Add</Link>
+              <Link to="/add">Ajouter</Link>
             </NavbarText>
             <Button
               outline
@@ -31,7 +31,7 @@ function NavBar(props) {
                 props.history.push("/");
               }}
             >
-              LogOut
+              Quitter
             </Button>
           </Nav>
         </Collapse>

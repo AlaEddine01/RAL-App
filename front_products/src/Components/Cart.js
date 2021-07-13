@@ -33,7 +33,7 @@ export class Cart extends Component {
             <Col>
               <Input
                 style={{ textDecoration: "none", border: "none" }}
-                placeholder="Name"
+                placeholder="Nom du client"
                 value={this.props.clientName.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
                   letter.toUpperCase()
                 )}
@@ -49,10 +49,10 @@ export class Cart extends Component {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Quantity</th>
-                <th>Product Name</th>
-                <th>Unit Price</th>
-                <th>Total</th>
+                <th>Quantité</th>
+                <th>Produit</th>
+                <th>P.U</th>
+                <th>Totale</th>
               </tr>
             </thead>
             <tbody>
@@ -90,13 +90,13 @@ export class Cart extends Component {
           >
             <Col xs="6">
               {this.props.cart.length}{" "}
-              {this.props.cart.length <= 1 ? <span>Product</span> : <span>Products</span>}
+              {this.props.cart.length <= 1 ? <span>Produit</span> : <span>Produits</span>}
             </Col>
             <Col xs="6" style={{ display: "flex", justifyContent: "flex-end" }}>
-              Total= {new Intl.NumberFormat("ar-TN").format(this.getTotal())}
+              Totale= {new Intl.NumberFormat("ar-TN").format(this.getTotal())}
             </Col>
           </Row>
-          <p className="cartFooter">You have been served by: {this.props.userName}</p>
+          <p className="cartFooter">vous êtes servi par: {this.props.userName}</p>
         </div>
       </div>
     );

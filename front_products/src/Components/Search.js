@@ -79,22 +79,22 @@ function Search({ setCart, cart }) {
   return (
     <div className="rowContainer">
       <Navbar color="light" light sticky="top">
-        <Label for="search">Search...</Label>
+        <Label for="search">Produit</Label>
         <Input
           type="text"
           id="search"
           className="form-control"
-          placeholder="Search..."
+          placeholder="Nom du produit"
           onChange={(e) => setFilteredProduct(e.target.value)}
           value={filteredProduct}
         />
 
-        <Label for="quantity">Quantity</Label>
+        <Label for="quantity">Quantité</Label>
         <Input
           type="number"
           id="quantity"
           className="form-control"
-          placeholder="Quantity"
+          placeholder="Quantité"
           onFocus={(e) => {
             e.preventDefault();
             setQuantity("");
@@ -105,9 +105,9 @@ function Search({ setCart, cart }) {
           onChange={(e) => setQuantity(e.target.value)}
         />
         {filteredProducts.length > 1 ? (
-          <p>{filteredProducts.length} products found</p>
+          <p>{filteredProducts.length} produits trouvés</p>
         ) : (
-          <p>{filteredProducts.length} product found</p>
+          <p>{filteredProducts.length} produit trouvé</p>
         )}
       </Navbar>
       {loading ? (
@@ -119,10 +119,10 @@ function Search({ setCart, cart }) {
           <thead>
             <tr>
               <th>#</th>
-              <th>Product Name</th>
-              <th>Unit Price</th>
-              <th></th>
-              <th></th>
+              <th>Produit</th>
+              <th>P.U</th>
+              <th>#</th>
+              <th>#</th>
             </tr>
           </thead>
           <tbody>
@@ -146,12 +146,12 @@ function Search({ setCart, cart }) {
                       setQuantity("");
                     }}
                   >
-                    Add
+                    Ajouter
                   </Button>
                 </td>
                 <td>
                   <Button color="danger" onClick={() => deleteProduct(item._id)}>
-                    delete
+                    Supprimer
                   </Button>
                 </td>
               </tr>

@@ -23,7 +23,7 @@ router.post("/addItem", checkAuth, (req, res) => {
   const { item, price } = req.body;
   Product.findOne({ item }).then((product) => {
     if (product) {
-      res.status(400).send("Product Already Exist");
+      res.status(400).send("Le produit existe déjà");
     } else {
       let NewProduct = new Product({ item, price });
       NewProduct.save()
@@ -73,7 +73,7 @@ router.post("/login", (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email })
     .then((user) => {
-      if (!user) res.status(404).send("User not Found");
+      if (!user) res.status(404).send(`Pas d'utilisateur avec le nom "${email}"`);
       else {
         if (user.password === password) {
           const payload = { id: user._id, email: user.email };
@@ -82,7 +82,7 @@ router.post("/login", (req, res) => {
             else res.json({ token: `Bearer ${token}` });
           });
         } else {
-          res.status(400).send("Incorrect Password");
+          res.status(400).send("Mot de passe incorrect");
         }
       }
     })
