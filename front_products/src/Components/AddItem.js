@@ -6,6 +6,7 @@ function AddItem({ getAllItems }) {
   const [product, setProduct] = useState({ item: "", price: "" });
 
   const [error, setError] = useState({ status: "", message: "" });
+  const [success, setSuccess] = useState(null);
 
   const nameRef = useRef();
   const priceRef = useRef();
@@ -36,6 +37,7 @@ function AddItem({ getAllItems }) {
       })
       .then((res) => {
         if (res.status === 200) {
+          setSuccess(res.data);
           setProduct({ item: "", price: "" });
         }
       })
@@ -67,14 +69,32 @@ function AddItem({ getAllItems }) {
             {`${error.message}:`}
             <br />
             {`Produit: ${product.item}`}
-            <br />
-            {`Prix: ${product.price}`}
           </Alert>
           <Button
             outline
             size="lg"
             onClick={(e) => {
               setError({ message: "", status: "" });
+              setProduct({ item: "", price: "" });
+            }}
+          >
+            OK
+          </Button>
+        </>
+      ) : success != null ? (
+        <>
+          <Alert color="primary">
+            {`Produit ajouté avec succès`}
+            <br />
+            {`Produit: ${success.item}`}
+            <br />
+            {`Prix: ${success.price}`}
+          </Alert>
+          <Button
+            outline
+            size="lg"
+            onClick={(e) => {
+              setSuccess(null);
               setProduct({ item: "", price: "" });
             }}
           >

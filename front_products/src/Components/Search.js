@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Button, Input, Table, Label, Navbar, Spinner } from "reactstrap";
+import { FaCartPlus } from "react-icons/fa";
+import { ImMenu } from "react-icons/im";
+import EditProduct from "./EditProduct";
 
 function Search({ setCart, cart }) {
   const [products, setProducts] = useState([]);
@@ -10,6 +13,12 @@ function Search({ setCart, cart }) {
   const [filteredProduct, setFilteredProduct] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const [modal, setModal] = useState(false);
+
+  const [productToChange, setProductToChange] = useState("");
+
+  const toggle = () => setModal(!modal);
 
   const getAllItems = async () => {
     setLoading(true);
@@ -22,21 +31,6 @@ function Search({ setCart, cart }) {
       .then((res) => {
         setProducts(res.data);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteProduct = async (_id) => {
-    await axios
-      .delete(`/Delete_Product/${_id}`, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        res.status === 200 && getAllItems();
       })
       .catch((err) => {
         console.log(err);
@@ -121,8 +115,8 @@ function Search({ setCart, cart }) {
               <th>#</th>
               <th>Produit</th>
               <th>P.U</th>
-              <th>#</th>
-              <th>#</th>
+              <th>Ajouter</th>
+              <th>Menu</th>
             </tr>
           </thead>
           <tbody>
@@ -146,19 +140,29 @@ function Search({ setCart, cart }) {
                       setQuantity("");
                     }}
                   >
-                    Ajouter
+                    <FaCartPlus />
                   </Button>
                 </td>
                 <td>
-                  <Button color="danger" onClick={() => deleteProduct(item._id)}>
-                    Supprimer
-                  </Button>
+                  <ImMenu
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      setProductToChange(item);
+                      toggle();
+                    }}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
+      <EditProduct
+        modal={modal}
+        toggle={toggle}
+        productToChange={productToChange}
+        getAllItems={getAllItems}
+      />
     </div>
   );
 }
