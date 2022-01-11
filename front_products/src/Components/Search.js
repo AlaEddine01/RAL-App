@@ -127,7 +127,7 @@ function Search({ setCart, cart }) {
                 <td>{new Intl.NumberFormat("ar-TN").format(item.price)}</td>
                 <td>
                   <Button
-                    color="primary"
+                    color={"success"}
                     // Rq:  You can convert a truthy or falsy value to true boolean with the !! operator.(used in cart.find)
                     disabled={
                       quantity === "0" ||
